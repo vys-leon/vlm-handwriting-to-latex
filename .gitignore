@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+.Python
+build/
+dist/
+wheels/
+share/python-wheels/
+*.egg-info/
+.venv/
+venv/
+env/
+ENV/
+*.env
+.env.*
+secrets.json
+
+# VS Code
+.vscode/

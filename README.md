@@ -1,6 +1,10 @@
 # Handwritten Formula → LaTeX (SmolVLM-256M)
 
-**Pet-project** для демонстрации fine-tuning мультимодальной VLM модели.
+**Статус проекта (15 марта 2026):**  
+Zero-shot и One-shot inference готовы + метрики посчитаны.  
+SFT (Supervised Fine-Tuning) в процессе — обновлю до 24 марта.
+
+**Project** для демонстрации fine-tuning мультимодальной VLM модели.
 
 Преобразует рукописные математические формулы в LaTeX-код.
 
@@ -8,9 +12,10 @@
 
 | Setup                        | CER      | Улучшение |
 |------------------------------|----------|---------|
-| Zero-shot                    | 0.171    | —       |
-| One-shot                     | 0.174    | —       |
-| SFT (linxy/LaTeX_OCR)        | **0.XXX** | **+XX%** |
+| Zero-shot                    | 0.1752    | —       |
+| One-shot                     | 0.1705    | улучшение на 2.68%       |
+| SFT (linxy/LaTeX_OCR)        | **0.XXXX** | **XX%** |
+| SFT + MathWriting | **0.XXXX** | **XX%**                         |
 
 **Метрика**: Character Error Rate (CER) — оптимально для LaTeX-кода.
 
