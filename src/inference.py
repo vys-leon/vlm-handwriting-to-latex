@@ -19,8 +19,8 @@ def infer_formula(image_path: str) -> str:
         {
             "role": "user",
             "content": [
-                {"type": "image"},
-                {"type": "text", "text": "Convert this handwritten formula to LaTeX. Output ONLY the LaTeX code, nothing else."}
+                {"type": "text", "text": "Write the LaTeX representation for this image."},
+                {"type": "image"}
             ]
         }
     ]
@@ -36,5 +36,5 @@ def infer_formula(image_path: str) -> str:
     return latex
 
 if __name__ == "__main__":
-    latex = infer_formula("screenshots/my_handwritten_test.jpg")
+    latex = infer_formula("screenshots/my_image.jpg")
     print("LaTeX:", latex)

@@ -15,17 +15,17 @@ model.eval()
 
 def evaluate_cer(test_dataset, mode="zero_shot", train_dataset=None):
     scores = []
-    base_text = "Convert this handwritten formula to LaTeX. Output ONLY the LaTeX code, nothing else."
+    base_text = "Write the LaTeX representation for this image."
     
     # Подготовка промпта
     if mode == "zero_shot":
-        prompt = [{"role": "user", "content": [{"type": "image"}, {"type": "text", "text": base_text}]}]
+        prompt = [{"role": "user", "content": [{"type": "text", "text": base_text}, {"type": "image"}]}]
     else:  # one_shot
         example = train_dataset[0]
         prompt = [
-            {"role": "user", "content": [{"type": "image"}, {"type": "text", "text": base_text}]},
+            {"role": "user", "content": [{"type": "text", "text": base_text}, {"type": "image"}]},
             {"role": "assistant", "content": [{"type": "text", "text": example["text"].replace(" ", "")}]},
-            {"role": "user", "content": [{"type": "image"}, {"type": "text", "text": base_text}]}
+            {"role": "user", "content": [{"type": "text", "text": base_text}, {"type": "image"}]}
         ]
         example_image = example["image"]
 

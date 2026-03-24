@@ -1,12 +1,8 @@
 # Технический отчёт: Handwritten Formula → LaTeX
 
-**Статус проекта (15 марта 2026):**  
-Zero-shot и One-shot inference готовы + метрики посчитаны.  
-SFT (Supervised Fine-Tuning) в процессе — обновлю до 24 марта.
-
-**Модель:** SmolVLM-256M-Instruct (HuggingFaceTB)  
+**Модель:** HuggingFaceTB/SmolVLM-256M Instruct (https://huggingface.co/HuggingFaceTB/SmolVLM-256M-Instruct)  
 **Задача:** Преобразование изображения рукописной математической формулы в LaTeX-код  
-**Датасет:** linxy/LaTeX_OCR (human_handwrite split)
+**Датасеты:** linxy/LaTeX_OCR (human_handwrite split) + deepcopy/MathWriting-human
 
 ## Экспериментальные сетапы
 
@@ -17,33 +13,32 @@ SFT (Supervised Fine-Tuning) в процессе — обновлю до 24 ма
 
 ## Метрика оценки
 **Character Error Rate (CER)** — основная метрика (хорошо подходит для LaTeX-кода).  
-Дополнительно считались BLEU и ROUGE-L.
 
 ## Результаты
 
-| Setup                          | CER     | Улучшение относительно zero-shot |
-|--------------------------------|---------|----------------------------------|
-| Zero-shot                      | 0.1752   | —                                |
-| One-shot                       | 0.1705  | улучшение на 2.68%                            |
-| SFT (linxy/LaTeX_OCR)          | **0.XXXX** | **XX%**                         |
-| SFT + MathWriting | **0.XXXX** | **XX%**                         |
+| Setup                        | CER      | Улучшение (по сравнению с zero-shot) |
+|------------------------------|----------|---------|
+| Zero-shot (baseline)                    | 0.1846    | —       |
+| One-shot                     | 0.1990    | ухудшение на 7.8 %       |
+| SFT (linxy/LaTeX_OCR)        | 0.1881 | ухудшение на 1.9 % |
+| SFT + deepcopy/MathWriting-human | 0.1859 | ухудшение на 0.7 %                         |
 
 **Тестирование на реальной фотографии** — проведено на собственной рукописной формуле.
 
 ## Технологии и детали обучения
 - **Модель:** SmolVLM-256M-Instruct
-- **Квантизация:** 4-bit (BitsAndBytes)
-- **Fine-tuning:** LoRA (r=8, alpha=8, target_modules=все linear слои)
-- **Оптимизатор:** AdamW, lr=1e-4
+- **Fine-tuning:** LoRA (r=16, alpha=16)
+- **Оптимизатор:** AdamW, lr=1e-5
 - **Библиотеки:** transformers, datasets, peft, jiwer, sacrebleu
 
 ## Выводы
-- Zero-shot и one-shot дают примерно одинаковое качество (модель слабо реагирует на один пример).
-- результаты SFT (SFT пока в процессе)
+- One-shot вышло по метрике хуже, чем zero-shot
+- результаты SFT: 
 - Проект демонстрирует полный цикл: от zero-shot до fine-tuning и деплоя.
 
 ## Ссылки
 - GitHub: https://github.com/vys-leon/vlm-handwriting-to-latex
-- HF-модель (после SFT): https://huggingface.co/Azaper/smolvlm-latex-ocr
+- HF-модель (после SFT using linxy/LaTeX_OCR:train): https://huggingface.co/Azaper/SmolVLM-256M-SFT-linxy 
+- HF-модель (после SFT using linxy/LaTeX_OCR:train + deepcopy/MathWriting-human): https://huggingface.co/Azaper/SmolVLM-256M-SFT-linxy-deepcopy
 
-**Дата:** 15 марта 2026
+**Дата:** 24 марта 2026

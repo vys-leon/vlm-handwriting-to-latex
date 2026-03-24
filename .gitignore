@@ -19,3 +19,8 @@ secrets.json
 
 # VS Code
 .vscode/
+
+# model files
+notebooks/Azaper
+notebooks/outputs
+notebooks/unsloth_compiled_cache
