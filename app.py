@@ -18,20 +18,20 @@ st.set_page_config(page_title="Handwritten → LaTeX", layout="centered")
 st.title("Handwritten Formula to LaTeX")
 st.caption("Fine-tuned SmolVLM-256M")
 
-uploaded_file = st.file_uploader("Загрузите фото рукописной формулы", type=["png", "jpg", "jpeg"])
+uploaded_file = st.file_uploader("Upload a photo of the handwritten formula", type=["png", "jpg", "jpeg"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption="Ваша формула", width="stretch")
+    st.image(image, caption="Your formula", width="stretch")
     
-    if st.button("Преобразовать в LaTeX", type="primary"):
-        with st.spinner("Модель работает..."):
+    if st.button("Convert to LaTeX", type="primary"):
+        with st.spinner("The model is working..."):
             processor, model = load_model()
             
             prompt = [
                 {"role": "user", "content": [
-                    {"type": "image"},
-                    {"type": "text", "text": "Convert this handwritten formula to LaTeX. Output ONLY the LaTeX code, nothing else."}
+                    {"type": "text", "text": "Write the LaTeX representation for this image."},
+                    {"type": "image"}
                 ]}
             ]
             
@@ -43,8 +43,8 @@ if uploaded_file is not None:
             
             latex = answer.split("Assistant:")[-1].strip()
             
-            st.success("Готово!")
+            st.success("Ready!")
             st.latex(latex)
             st.code(latex, language="latex")
             
-            st.download_button("Скачать LaTeX", latex, file_name="formula.tex")
+            st.download_button("Download LaTeX", latex, file_name="formula.tex")

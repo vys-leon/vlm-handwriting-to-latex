@@ -1,44 +1,66 @@
-# Технический отчёт: Handwritten Formula → LaTeX
+# Technical Report: Handwritten Formula to LaTeX OCR System
 
-**Модель:** HuggingFaceTB/SmolVLM-256M Instruct (https://huggingface.co/HuggingFaceTB/SmolVLM-256M-Instruct)  
-**Задача:** Преобразование изображения рукописной математической формулы в LaTeX-код  
-**Датасеты:** linxy/LaTeX_OCR (human_handwrite split) + deepcopy/MathWriting-human
+**Task 1 – Multimodal Reasoning for STEM Internship**  
+**Author:** Leonid Vysotsky  
+**Date:** 24 March 2026
 
-## Экспериментальные сетапы
+## 1. Model
+- Base model: `HuggingFaceTB/SmolVLM-256M-Instruct`
 
-1. **Zero-shot inference**
-2. **One-shot inference** (фиксированный пример из train)
-3. **Supervised Fine-Tuning (SFT)** — только linxy/LaTeX_OCR:train
-4. **SFT + MathWriting-human**
+## 2. Task
+Convert an image containing a handwritten mathematical formula into clean LaTeX code (Image → Text).
 
-## Метрика оценки
-**Character Error Rate (CER)** — основная метрика (хорошо подходит для LaTeX-кода).  
+## 3. Datasets
+- Primary: `linxy/LaTeX_OCR` (human_handwrite split)
+- Additional: `deepcopy/MathWriting-human` (used as supplementary data)
 
-## Результаты
+## 4. Experimental Setups
+1. Zero-shot inference  
+2. One-shot inference (single fixed example from train set)  
+3. Supervised Fine-Tuning (SFT) on `linxy/LaTeX_OCR:train` only  
+4. SFT on `linxy/LaTeX_OCR:train` + `deepcopy/MathWriting-human`
 
-| Setup                        | CER      | Улучшение (по сравнению с zero-shot) |
-|------------------------------|----------|---------|
-| Zero-shot (baseline)                    | 0.1846    | —       |
-| One-shot                     | 0.1990    | ухудшение на 7.8 %       |
-| SFT (linxy/LaTeX_OCR)        | 0.1881 | ухудшение на 1.9 % |
-| SFT + deepcopy/MathWriting-human | 0.1859 | ухудшение на 0.7 %                         |
+## 5. Fine-Tuning Details (Hyperparameters)
+- Method: LoRA (rank=16, alpha=16)
+- Quantization: 4-bit (bitsandbytes)
+- Optimizer: AdamW
+- Learning rate: 1e-5
+- Epochs: 1
+- Libraries: `transformers`, `peft`, `bitsandbytes`, `datasets`, `jiwer`
 
-**Тестирование на реальной фотографии** — проведено на собственной рукописной формуле.
+## 6. Evaluation
+- **Test set:** `linxy/LaTeX_OCR:test` (70 examples)
+- **Metric:** Character Error Rate (CER) — perfect for LaTeX string comparison
+- Additional qualitative testing on real smartphone photos of my own handwritten formulas
 
-## Технологии и детали обучения
-- **Модель:** SmolVLM-256M-Instruct
-- **Fine-tuning:** LoRA (r=16, alpha=16)
-- **Оптимизатор:** AdamW, lr=1e-5
-- **Библиотеки:** transformers, datasets, peft, jiwer, sacrebleu
+## 7. Results
 
-## Выводы
-- One-shot вышло по метрике хуже, чем zero-shot
-- результаты SFT: 
-- Проект демонстрирует полный цикл: от zero-shot до fine-tuning и деплоя.
+| Setup                                      | CER    | vs Zero-shot |
+|--------------------------------------------|--------|--------------|
+| Zero-shot (baseline)                       | 0.1846 | —            |
+| One-shot                                   | 0.1990 | -7.8%        |
+| SFT (linxy/LaTeX_OCR only)                 | 0.1881 | -1.9%        |
+| **SFT (linxy + MathWriting-human)**        | **0.1859** | **-0.7%** |
 
-## Ссылки
+## 8. Streamlit Application (Task 2)
+- File: `app.py`
+- Functionality: upload image → model inference → rendered LaTeX (using MathJax)
+- Fully implemented using the best SFT model
+- Tested on real photos of handwritten formulas
+
+**Video demonstration:**  
+[Watch full demo on YouTube](https://youtu.be/--kOWz4kNW8)
+
+**Screenshots** are available in the [`screenshots/`](screenshots/) folder.
+
+## 9. Repository & Models
 - GitHub: https://github.com/vys-leon/vlm-handwriting-to-latex
-- HF-модель (после SFT using linxy/LaTeX_OCR:train): https://huggingface.co/Azaper/SmolVLM-256M-SFT-linxy 
-- HF-модель (после SFT using linxy/LaTeX_OCR:train + deepcopy/MathWriting-human): https://huggingface.co/Azaper/SmolVLM-256M-SFT-linxy-deepcopy
+- HF Model 1: https://huggingface.co/Azaper/SmolVLM-256M-SFT-linxy
+- HF Model 2: https://huggingface.co/Azaper/SmolVLM-256M-SFT-linxy-deepcopy
 
-**Дата:** 24 марта 2026
+## 10. Conclusions
+- One-shot inference slightly degraded performance.
+- SFT with additional human-written data gave the best result.
+- The project demonstrates a complete end-to-end pipeline: from zero-shot to efficient fine-tuning and a production-ready web application.
+
+**Ready for deployment and further research.**
