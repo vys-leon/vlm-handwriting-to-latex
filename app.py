@@ -22,7 +22,7 @@ uploaded_file = st.file_uploader("Загрузите фото рукописно
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
-    st.image(image, caption="Ваша формула", use_column_width=True)
+    st.image(image, caption="Ваша формула", width="stretch")
     
     if st.button("Преобразовать в LaTeX", type="primary"):
         with st.spinner("Модель работает..."):
