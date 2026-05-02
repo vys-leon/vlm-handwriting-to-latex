@@ -86,7 +86,6 @@ python src/evaluate.py
 |   |__ inference.py                # model inference
 |-- app.py                          # Streamlit application
 |-- README.md
-|-- report.md
 |__ requirements.txt
 ```
 
