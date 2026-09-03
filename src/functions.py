@@ -1,18 +1,10 @@
 import numpy as np
 import pandas as pd
 import torch
-from datasets import load_dataset
 import jiwer
 import re
 import random
-from PIL import Image
-from unsloth import FastVisionModel
-from transformers import AutoProcessor, AutoModelForImageTextToText, AutoModelForMultimodalLM
-from transformers.image_utils import load_image
-from rouge_score import rouge_scorer
-from IPython.display import display, Math
 from transformers import set_seed
-from huggingface_hub import login
 from tqdm.notebook import tqdm
 
 def seed_everything(seed=42):

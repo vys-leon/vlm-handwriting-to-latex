@@ -24,3 +24,6 @@ secrets.json
 notebooks/Azaper
 notebooks/outputs
 notebooks/unsloth_compiled_cache
+
+# unsloth files
+unsloth_compiled_cache
