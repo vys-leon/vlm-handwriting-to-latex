@@ -4,9 +4,9 @@ from .functions import *
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-assert "HF_TOKEN" not in os.environ, "Ошибка: Токен HF_TOKEN не найден в файле .env"
-model_id = "Azaper/Qwen3-VL-2B-Instruct-unsloth-bnb-4bit-linxy"
+# load_dotenv()
+# assert "HF_TOKEN" not in os.environ, "Ошибка: Токен HF_TOKEN не найден в файле .env"
+model_id = "Azaper/Qwen3-VL-2B-Instruct-unsloth-bnb-4bit-linxy-deepcopy"
 model, tokenizer = FastVisionModel.from_pretrained(
     model_id,
     load_in_4bit = True,
